@@ -1,0 +1,78 @@
+0 info it worked if it ends with ok
+1 verbose cli [ 'node', '/usr/local/bin/npm', 'install', '-g', 'cordova@3.3.0' ]
+2 info using npm@1.4.28
+3 info using node@v0.10.35
+4 verbose cache add [ 'cordova@3.3.0', null ]
+5 verbose cache add name=undefined spec="cordova@3.3.0" args=["cordova@3.3.0",null]
+6 verbose parsed url { protocol: null,
+6 verbose parsed url   slashes: null,
+6 verbose parsed url   auth: null,
+6 verbose parsed url   host: null,
+6 verbose parsed url   port: null,
+6 verbose parsed url   hostname: null,
+6 verbose parsed url   hash: null,
+6 verbose parsed url   search: null,
+6 verbose parsed url   query: null,
+6 verbose parsed url   pathname: 'cordova@3.3.0',
+6 verbose parsed url   path: 'cordova@3.3.0',
+6 verbose parsed url   href: 'cordova@3.3.0' }
+7 verbose cache add name="cordova" spec="3.3.0" args=["cordova","3.3.0"]
+8 verbose parsed url { protocol: null,
+8 verbose parsed url   slashes: null,
+8 verbose parsed url   auth: null,
+8 verbose parsed url   host: null,
+8 verbose parsed url   port: null,
+8 verbose parsed url   hostname: null,
+8 verbose parsed url   hash: null,
+8 verbose parsed url   search: null,
+8 verbose parsed url   query: null,
+8 verbose parsed url   pathname: '3.3.0',
+8 verbose parsed url   path: '3.3.0',
+8 verbose parsed url   href: '3.3.0' }
+9 verbose addNamed [ 'cordova', '3.3.0' ]
+10 verbose addNamed [ '3.3.0', '3.3.0' ]
+11 silly lockFile 23a08b4a-cordova-3-3-0 cordova@3.3.0
+12 verbose lock cordova@3.3.0 /Users/School/.npm/23a08b4a-cordova-3-3-0.lock
+13 verbose request where is /cordova
+14 verbose request registry https://registry.npmjs.org/
+15 verbose request id 57b0dd0fa2459c9c
+16 verbose url raw /cordova
+17 verbose url resolving [ 'https://registry.npmjs.org/', './cordova' ]
+18 verbose url resolved https://registry.npmjs.org/cordova
+19 verbose request where is https://registry.npmjs.org/cordova
+20 info trying registry request attempt 1 at 22:21:49
+21 http GET https://registry.npmjs.org/cordova
+22 http 200 https://registry.npmjs.org/cordova
+23 silly registry.get cb [ 200,
+23 silly registry.get   { server: 'nginx/1.10.1',
+23 silly registry.get     'content-type': 'application/json',
+23 silly registry.get     'last-modified': 'Fri, 21 Apr 2017 02:50:23 GMT',
+23 silly registry.get     etag: 'W/"58f9736f-13e09a"',
+23 silly registry.get     'content-encoding': 'gzip',
+23 silly registry.get     'cache-control': 'max-age=300',
+23 silly registry.get     'content-length': '45896',
+23 silly registry.get     'accept-ranges': 'bytes',
+23 silly registry.get     date: 'Sun, 23 Apr 2017 02:21:44 GMT',
+23 silly registry.get     via: '1.1 varnish',
+23 silly registry.get     age: '203',
+23 silly registry.get     connection: 'keep-alive',
+23 silly registry.get     'x-served-by': 'cache-jfk8129-JFK',
+23 silly registry.get     'x-cache': 'HIT',
+23 silly registry.get     'x-cache-hits': '1',
+23 silly registry.get     'x-timer': 'S1492914105.715616,VS0,VE0',
+23 silly registry.get     vary: 'Accept-Encoding' } ]
+24 silly lockFile 23a08b4a-cordova-3-3-0 cordova@3.3.0
+25 silly lockFile 23a08b4a-cordova-3-3-0 cordova@3.3.0
+26 error Error: version not found: cordova@3.3.0
+26 error     at /usr/local/lib/node_modules/npm/lib/cache/add-named.js:125:12
+26 error     at saved (/usr/local/lib/node_modules/npm/node_modules/npm-registry-client/lib/get.js:167:7)
+26 error     at Object.oncomplete (fs.js:108:15)
+27 error If you need help, you may report this *entire* log,
+27 error including the npm and node versions, at:
+27 error     <http://github.com/npm/npm/issues>
+28 error System Darwin 16.1.0
+29 error command "node" "/usr/local/bin/npm" "install" "-g" "cordova@3.3.0"
+30 error cwd /Users/School/Documents/School/TopicsofCompSci/ParkingNinja
+31 error node -v v0.10.35
+32 error npm -v 1.4.28
+33 verbose exit [ 1, true ]

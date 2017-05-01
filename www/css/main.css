@@ -1,0 +1,85 @@
+.tutorialicon {
+  font-size: 250px;
+  line-height: 170px;
+}
+.ninja{
+    position: relative;
+    left: 5vw;
+    top: 8vh;
+}
+.ninja img{
+    width: 60%;
+    height: initial;
+}
+
+#streetName,#streetRisk{
+    text-align: center;
+    display: inline-block;
+    width: 49%;
+}
+canvas#myChart {
+  width:100% !important;
+  height:44% !important;
+}
+
+.tutorial-close-btn {
+  background: #fff;
+  padding: 10px;
+  border-radius: 10px;
+  color: #0da6ec;
+}
+
+.welcomescreen-container .welcomescreen-text a{
+  color: #fff;
+  text-decoration: underline;
+}
+.navbar .left {
+    margin-right: 0px !important; 
+}
+.tutorial-close-btn {
+  background: #fff;
+  padding: 10px;
+  border-radius: 10px;
+  color: #0da6ec !important;
+  text-decoration: none !important;
+}
+
+.risk {
+    padding: 10px 0 10px 0;
+    /* height: 31px; */
+    background-color: lightgreen;
+    border-bottom: 1px solid black;
+}
+#score,#user{
+  color:white;
+}
+.footerFunctions{
+  font-size:24px;
+  display:inline-block;
+  width:49%;
+  font-family:fantasy;
+}
+
+footer{
+  background-color:white;
+  width:100%;
+  position:absolute;
+  bottom:0;
+  z-index:9999;
+}
+.footerFunctions{
+    height: 7vh;
+    text-align:center;
+    font-family:fantasy;
+
+}
+.footerFunctions p{
+  margin:0.5em;
+}
+.footerFunctionsL{
+  border-right: solid 1px black;
+}
+.zoneDescription{
+  text-align:center;
+}
+/*# sourceMappingURL=main.css.map */

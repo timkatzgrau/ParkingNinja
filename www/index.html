@@ -1,0 +1,315 @@
+<!DOCTYPE html>
+<html ng-app="myapp">
+    
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, minimum-scale=1, user-scalable=no, minimal-ui">
+        <meta name="apple-mobile-web-app-capable" content="yes">
+        <meta name="apple-mobile-web-app-status-bar-style" content="black">
+        <meta http-equiv="Content-Security-Policy" content="default-src *; script-src 'self' 'unsafe-inline' 'unsafe-eval' *; style-src 'self' 'unsafe-inline' *; img-src *">
+
+        <title>Parking Ninja</title>
+        <!-- Path to Framework7 Library CSS-->
+        <link rel="stylesheet" href="lib/framework7/css/framework7.ios.min.css">
+        <!-- Path to custom app styles-->
+        <link rel="stylesheet" href="css/main.css">
+        <link rel="stylesheet" href="js/myapp/welcomescreen.css">
+      
+        <script type="text/javascript" src="lib/framework7/js/framework7.min.js"></script>
+        <script type="text/javascript" src="js/myapp/welcomescreen.js"></script>
+        <script type="text/javascript" src="js/myapp/query.js"></script>
+        <script type="text/javascript" src="js/myapp/pages/IndexPageController.js"></script>
+        <script type="text/javascript" src="js/myapp/init.js"></script>
+        <script src="http://mysqljs.com/mysql.js"></script>
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+        <script type="text/javascript" charset="utf-8" src="../platforms/browser/www/cordova.js"></script>  
+        <script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDKeuQPQQCVOkxkjVsr0p5jlTk4k5ebSyc&callback=initMap"></script>
+        <script type="text/javascript" src="../plugins/cordova-plugin-device/www/device.js"></script>
+        <script type="text/javascript" src="http://www.chartjs.org/assets/Chart.js"></script>
+         <access origin="*.google.com"/>
+        <access origin="*.googleapis.com"/>
+<script>
+</script>
+
+        <style>
+
+            #map {
+              height: 30% !important;
+            }
+
+            html, body {
+              height: 100%;
+              margin: 0;
+              padding: 0;
+            }
+
+            .content-block {
+                margin: 0px 0 !important; 
+                padding:0px !important;
+            }
+
+        </style>
+
+    </head>
+    
+    <body>
+        <div id="riskColors"></div>
+
+        <div class="statusbar-overlay"></div>
+
+        <div class="panel-overlay"></div>
+        
+        <div class="views">
+            <div class="view view-main">
+
+                <div class="navbar">
+
+                    <div class="navbar-inner">
+                        <div id="score" class="left sliding">Score: 0</div> 
+                        <div class="center sliding">Parking Ninja</div> 
+                        <div id="user" class="right sliding">Account</div>                  
+                    </div>
+
+                </div>
+
+                <div class="pages navbar-through toolbar-through">
+                    <div data-page="index" class="page" ng-controller="IndexPageController">
+                        <div class="page-content" style="height:100%; width:100%;">
+                            <div class="content-block" style="height:100%; width:100%;">
+
+                                <div id="map" style="height:100%; width:100%;"></div>
+
+                                <div id="zones" style="height:100%; width:100%;">
+
+                                    <div id="zoneNav">
+                                        <div class="zoneDescription" style='border-right: solid 1px black' >
+                                            <span>
+                                                <strong>Street</strong>
+                                            </span>
+                                        </div>
+
+                                        <div class="zoneDescription">
+                                            <span>
+                                                <strong>Risk</strong>
+                                            </span>
+                                        </div>
+                                    </div>
+
+                                    <div id="streetStats"></div>
+                                    <canvas id="myChart" width="500" height="300"></canvas>
+                                    <div id="testing"></div>
+                                    <script>
+                                    var name;
+                                    if (navigator.geolocation) {
+
+                                        navigator.geolocation.getCurrentPosition(function (position) {
+                                            var initialLocation = new google.maps.LatLng(position.coords.latitude, position.coords.longitude);
+
+                                            var geocoder = new google.maps.Geocoder();
+
+                                                geocoder.geocode({'latLng': initialLocation}, function(results, status) {
+                                                    if (status == google.maps.GeocoderStatus.OK) {
+
+                                                        //Searches through JSON file for the route (AKA Street Name)
+                                                        for(var addComponent in results[0].address_components){
+
+                                                            var component = results[0].address_components[addComponent];
+
+                                                            for(typeIndex in component.types ){
+                                                                if(component.types[typeIndex]=='route') {
+                                                                    name = component.long_name;
+
+
+                                                                }
+                                                            }
+                                                        }
+                                                    }
+                                                });
+                                        })}
+
+                                            var risks = [];
+                                            var riskNum;
+                                            
+                                                
+                                                MySql.Execute(
+                                                    "katzgrau.cz4d9kjjznl8.us-east-1.rds.amazonaws.com",
+                                                    "TimKatzgrau", 
+                                                    "parkingNINJA", 
+                                                    "Testing", 
+                                                    "select * from Streets where name="+"'"+name+"';", 
+                                                function (data) {
+
+                                                    var jsonSTR = JSON.stringify(data,null,2);
+                                                    var str = "";
+                                                    jsonSTR = jsonSTR.substring(jsonSTR.indexOf("{")+1);
+                                                    jsonSTR = jsonSTR.substring(jsonSTR.indexOf("Name")+1);
+                                                    jsonSTR = jsonSTR.substring(jsonSTR.indexOf(",")+1);
+                                                    while(jsonSTR.length != 0 && jsonSTR.length != null && jsonSTR.indexOf(":") != -1){
+                                                        jsonSTR = jsonSTR.substring(jsonSTR.indexOf(":")+1);
+                                                        risks.push(parseInt(jsonSTR.substring(0,3)));
+
+                                                    }
+
+                                                }); 
+                                            
+
+                                    $(window).bind("load", function() { 
+                                        var data = {
+                                            labels : ["12:00am","1:00am","2:00am","3:00am",
+                                                      "4:00am","5:00am","6:00am",
+                                                      "7:00am","8:00am","9:00am",
+                                                      "10:00am","11:00am","12:00pm","1:00pm","2:00pm","3:00pm",
+                                                      "4:00pm","5:00pm","6:00pm",
+                                                      "7:00pm","8:00pm","9:00pm",
+                                                      "10:00pm","11:00pm"],
+                                            datasets : [
+                                                {
+                                                    fillColor : "rgba(252,0,0,0.5)",
+                                                    strokeColor : "black",
+                                                    pointColor : "rgba(166,152,51,1)",
+                                                    pointStrokeColor : "#fff",
+                                                    data : risks
+                                                }
+                                            ]
+                                        }
+
+
+                                    var options={                   
+                                        //Boolean - If we show the scale above the chart data           
+                                        scaleOverlay : false,
+                                        
+                                        //Boolean - If we want to override with a hard coded scale
+                                        scaleOverride : true,
+                                        
+                                        //** Required if scaleOverride is true **
+                                        //Number - The number of steps in a hard coded scale
+                                        scaleSteps : 10,
+                                        //Number - The value jump in the hard coded scale
+                                        scaleStepWidth : 10,
+                                        //Number - The scale starting value
+                                        scaleStartValue : 0,
+                                        //String - Colour of the scale line 
+                                        scaleLineColor : "rgba(20,20,20,.7)",
+                                        
+                                        //Number - Pixel width of the scale line    
+                                        scaleLineWidth : 1,
+
+                                        //Boolean - Whether to show labels on the scale 
+                                        scaleShowLabels : true,
+                                        
+                                        //Interpolated JS string - can access value
+                                        scaleLabel : "<%=value%>",
+                                        
+                                        //String - Scale label font declaration for the scale label
+                                        scaleFontFamily : "'Arial'",
+                                        
+                                        //Number - Scale label font size in pixels  
+                                        scaleFontSize : 12,
+                                        
+                                        //String - Scale label font weight style    
+                                        scaleFontStyle : "normal",
+                                        
+                                        //String - Scale label font colour  
+                                        scaleFontColor : "#666",    
+                                        
+                                        ///Boolean - Whether grid lines are shown across the chart
+                                        scaleShowGridLines : true,
+                                        
+                                        //String - Colour of the grid lines
+                                        scaleGridLineColor : "rgba(0,0,0,.3)",
+                                        
+                                        //Number - Width of the grid lines
+                                        scaleGridLineWidth : 1, 
+                                        
+                                        //Boolean - Whether the line is curved between points
+                                        bezierCurve : true,
+                                        
+                                        //Boolean - Whether to show a dot for each point
+                                        pointDot : false,
+                                        
+                                        //Number - Radius of each point dot in pixels
+                                        pointDotRadius : 5,
+                                        
+                                        //Number - Pixel width of point dot stroke
+                                        pointDotStrokeWidth : 1,
+                                        
+                                        //Boolean - Whether to show a stroke for datasets
+                                        datasetStroke : true,
+                                        
+                                        //Number - Pixel width of dataset stroke
+                                        datasetStrokeWidth : 2,
+                                        
+                                        //Boolean - Whether to fill the dataset with a colour
+                                        datasetFill : true,
+                                        
+                                        //Boolean - Whether to animate the chart
+                                        animation : false,
+
+                                        //Number - Number of animation steps
+                                        animationSteps : 60,
+                                        
+                                        //String - Animation easing effect
+                                        animationEasing : "easeOutQuart",
+
+                                        //Function - Fires when the animation is complete
+                                        onAnimationComplete : null
+                                    };
+
+
+                                    //Get context with jQuery - using jQuery's .get() method.
+                                    var ctx = $("#myChart").get(0).getContext("2d");
+
+
+                                    new Chart(ctx).Line(data,options);
+                                    });
+                                    
+                                    storage = window.localStorage;
+
+
+
+                                    function park() {
+
+                                            document.getElementById("parkHolder").innerHTML = "<p class='footerButton park' id='park1' onclick='unpark()' >UNPARK</p>";
+                                            document.getElementById("parkingLocation").innerHTML = name;
+                                            storage.setItem("park", name);
+                                        
+
+                                    }
+                                    function unpark() {
+                                            document.getElementById("parkHolder").innerHTML = "<p class='footerButton park' id='park2' onclick='park()' >PARK</p>";
+                                            document.getElementById("parkingLocation").innerHTML = "";
+
+                                            storage.removeItem("park");
+                                        
+
+                                        
+                                    }
+                                    </script>
+                                     <hr>
+                                     You Parked Here
+                                     <div id="parkingLocation">:</div>
+
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </body>
+
+    <footer>
+
+
+        <div class="footerFunctions footerFunctionsL" id="parkHolder">
+            <p class="footerButton park" id='park2' onclick='park()' >PARK</p>
+        </div>
+
+        <div id="reportPark" class="footerFunctions report report1">
+            <p class="footerButton report report1">REPORT</p>
+        </div>
+
+
+    </footer>
+
+</html>
